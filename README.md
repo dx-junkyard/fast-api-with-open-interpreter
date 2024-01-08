@@ -1,5 +1,11 @@
 # fast-api-with-open-interpreter
 
+## export requirements
+
+```bash
+$ poetry export -f requirements.txt --output requirements.txt --without-hashes
+```
+
 ## Docker
 
 1. Build image
