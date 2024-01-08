@@ -63,6 +63,10 @@ def chat_endpoint(
     with open(input_filename, "wb") as f:
         f.write(file)
 
+    # outputファイルを一時的に作成する
+    with open(output_filename, "w") as f:
+        f.write("")
+
     def event_stream():
         for result in interpreter.chat(message, stream=True):
             resultJson = json.dumps(result, ensure_ascii=False)
@@ -71,10 +75,6 @@ def chat_endpoint(
                 with open(output_filename, "r") as f:
                     lines = f.readlines()
                     print(len(lines))
-
-                # tenpファイルを削除する
-                os.remove(input_filename)
-                os.remove(output_filename)
 
             yield f"data: {resultJson}\n\n"
 
