@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "fast-api-with-open-interpreter"
+version = "0.1.0"
+description = ""
+authors = ["FooQoo <horseshoes.buzz.17@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fast_api_with_open_interpreter", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "3.11.3"
+fastapi = "^0.108.0"
+uvicorn = {extras = ["standard"], version = "^0.25.0"}
+
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.0"
+black = "^23.12.1"
+flake8 = "^7.0.0"
+mypy = "^1.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
