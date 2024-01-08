@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import FastAPI, Form, HTTPException, UploadFile, File
+from fastapi import BackgroundTasks, FastAPI, Form, HTTPException, UploadFile, File
 from fastapi.responses import StreamingResponse
 import interpreter
 import os
@@ -52,6 +52,7 @@ def chat_endpoint(
     file: Annotated[bytes, File()],
     extension: Annotated[str, Form()],
     message: Annotated[str, Form()],
+    background_tasks: BackgroundTasks,
 ):
     uid = uuid.uuid4()
     input_filename = f"{uid}_input.{extension}"
@@ -71,18 +72,20 @@ def chat_endpoint(
         for result in interpreter.chat(message, stream=True):
             resultJson = json.dumps(result, ensure_ascii=False)
 
-            if "end_of_message" in result and result["end_of_message"]:
-                with open(output_filename, "r") as f:
-                    lines = f.readlines()
-                    print(len(lines))
-
             yield f"data: {resultJson}\n\n"
+
+    background_tasks.add_task(after_task, input_filename, output_filename)
 
     try:
         return StreamingResponse(event_stream(), media_type="text/event-stream")
     except Exception as e:
         print(e)
-        # tenpファイルを削除する
-        os.remove(input_filename)
-        os.remove(output_filename)
         raise HTTPException(status_code=500)
+
+
+def after_task(input_filename, output_filename):
+    with open(output_filename, "r") as f:
+        lines = f.readlines()
+        print(len(lines))
+    os.remove(input_filename)
+    os.remove(output_filename)
