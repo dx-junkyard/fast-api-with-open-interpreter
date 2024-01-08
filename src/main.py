@@ -1,11 +1,11 @@
 from typing import Annotated
-from fastapi import BackgroundTasks, FastAPI, Form, HTTPException, UploadFile, File
+from fastapi import BackgroundTasks, FastAPI, Form, HTTPException, File
 from fastapi.responses import StreamingResponse
 import interpreter
 import os
 from fastapi.middleware.cors import CORSMiddleware
 import json
-import uuid
+import requests
 
 interpreter.model = f"azure/{os.environ['AZURE_API_DEPLOYMENT_ID']}"
 interpreter.auto_run = True  # ユーザーの確認なしで生成されたコードを自動的に実行できるようになる
@@ -17,7 +17,7 @@ interpreter.temperature = 1.0
 interpreter.conversation_history = False
 
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000", os.environ["ORIGIN_URL"]]
 
 app = FastAPI()
 
@@ -51,12 +51,12 @@ def build_prompt(input_file, output_filename, message):
 def chat_endpoint(
     file: Annotated[bytes, File()],
     extension: Annotated[str, Form()],
+    uuid: Annotated[str, Form()],
     message: Annotated[str, Form()],
     background_tasks: BackgroundTasks,
 ):
-    uid = uuid.uuid4()
-    input_filename = f"{uid}_input.{extension}"
-    output_filename = f"{uid}_output.csv"
+    input_filename = f"{uuid}_input.{extension}"
+    output_filename = f"{uuid}_output.csv"
 
     message = build_prompt(input_filename, output_filename, message)
 
@@ -71,7 +71,6 @@ def chat_endpoint(
     def event_stream():
         for result in interpreter.chat(message, stream=True):
             resultJson = json.dumps(result, ensure_ascii=False)
-
             yield f"data: {resultJson}\n\n"
 
     background_tasks.add_task(after_task, input_filename, output_filename)
@@ -83,9 +82,15 @@ def chat_endpoint(
         raise HTTPException(status_code=500)
 
 
+post_url = os.environ["OUTPUT_UPLOAD_URL"]
+headers = {
+    "Authorization": f"Bearer {os.environ['OUTPUT_UPLOAD_TOKEN']}",
+}
+
+
 def after_task(input_filename, output_filename):
-    with open(output_filename, "r") as f:
-        lines = f.readlines()
-        print(len(lines))
+    files = {"files": open(output_filename, "rb")}
+    res = requests.post(post_url, files=files, headers=headers)
+    print(res.text)
     os.remove(input_filename)
     os.remove(output_filename)
