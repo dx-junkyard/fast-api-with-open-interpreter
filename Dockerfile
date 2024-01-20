@@ -1,5 +1,5 @@
 # 
-FROM python:3.11.3
+FROM --platform=linux/x86_64 python:3.11.3
 
 # 
 WORKDIR /code
