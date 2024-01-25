@@ -12,8 +12,8 @@ interpreter.auto_run = True  # ユーザーの確認なしで生成されたコ�
 interpreter.api_base = os.environ["AZURE_API_BASE"]
 interpreter.api_key = os.environ["AZURE_API_KEY"]
 interpreter.api_version = os.environ["AZURE_API_VERSION"]
-interpreter.debug_mode = False
-interpreter.temperature = 1.0
+interpreter.debug_mode = True
+interpreter.temperature = 0.7
 interpreter.conversation_history = True
 
 

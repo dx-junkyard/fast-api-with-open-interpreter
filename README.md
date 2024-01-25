@@ -17,7 +17,7 @@ docker build -t fast-api-with-open-interpreter .
 2. Run container
 
 ```bash
-docker run -it --env-file=.env --rm -d --name mycontainer -p 80:80 fast-api-with-open-interpreter
+docker run -it --env-file=.env --rm --name fast-api-with-open-interpreter -p 8081:80 fast-api-with-open-interpreter
 ```
 3. Docker push
 
