@@ -37,12 +37,23 @@ def read_root():
 
 def build_prompt_with_input(input_file, output_filename, message):
     return f"""
-ユーザの質問に回答してください。なお入力ファイルが指定されている場合は、入力ファイルを読み込み、
+以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
+
+(1)
 変換した結果を出力ファイルに結果を書き込んでください。
 入力ファイル: {input_file if input_file else "なし"}
 出力ファイル: {output_filename if output_filename else "なし"}
-回答文は日本語で入力してください。日本語でない場合は、ペナルティが発生します。
-メッセージは下記です。
+
+(2) 
+利用するライブラリは以下を推奨します。
+- CSVファイルに関連する処理 : pandas
+- エクセルファイルに関連する処理 : openpyxl
+- PDFファイルに関連する処理 : pymupdf
+
+(3)
+必ず日本語で回答しなければなりません。
+
+最後にユーザのメッセージを示します。
 ===
 {message}
 """
@@ -50,11 +61,22 @@ def build_prompt_with_input(input_file, output_filename, message):
 
 def build_prompt(output_filename, message):
     return f"""
-ユーザの質問に回答してください。
+以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
+
+(1)
 ファイル操作に関する質問の場合は、
 「{output_filename}」のファイルを操作して、同じファイルに結果を書き込んでください。
-回答文は日本語で入力してください。日本語でない場合は、ペナルティが発生します。
-メッセージは下記です。
+
+(2) 
+利用するライブラリは以下を推奨します。
+- CSVファイルに関連する処理 : pandas
+- エクセルファイルに関連する処理 : openpyxl
+- PDFファイルに関連する処理 : pymupdf
+
+(3)
+必ず日本語で回答しなければなりません。
+
+最後にユーザのメッセージを示します。
 ===
 {message}
 """

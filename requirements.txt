@@ -16,7 +16,7 @@ chardet==5.2.0
 charset-normalizer==3.3.2
 click==8.1.7
 comm==0.2.1
-cryptography==41.0.7
+cryptography==42.0.1
 debugpy==1.8.0
 decorator==5.1.1
 editor==1.6.5
@@ -76,6 +76,8 @@ pydantic==2.5.3
 pydantic_core==2.14.6
 pyflakes==3.2.0
 Pygments==2.17.2
+PyMuPDF==1.23.19
+PyMuPDFb==1.23.9
 pypdf==4.0.0
 PyPDF2==3.0.1
 python-dateutil==2.8.2
