@@ -12,9 +12,10 @@ interpreter.auto_run = True  # ユーザーの確認なしで生成されたコ�
 interpreter.api_base = os.environ["AZURE_API_BASE"]
 interpreter.api_key = os.environ["AZURE_API_KEY"]
 interpreter.api_version = os.environ["AZURE_API_VERSION"]
-interpreter.debug_mode = True
+interpreter.debug_mode = False
 interpreter.temperature = 0.7
 interpreter.conversation_history = True
+interpreter.context_window = 32000
 
 
 origins = ["http://localhost:3000"]
@@ -37,21 +38,32 @@ def read_root():
 
 def build_prompt_with_input(input_file, output_filename, message):
     return f"""
+あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
 
-(1)
-変換した結果を出力ファイルに結果を書き込んでください。
+* 変換した結果を出力ファイルに結果を書き込んでください。
 入力ファイル: {input_file if input_file else "なし"}
 出力ファイル: {output_filename if output_filename else "なし"}
 
-(2) 
-利用するライブラリは以下を推奨します。
-- CSVファイルに関連する処理 : pandas
-- エクセルファイルに関連する処理 : openpyxl
-- PDFファイルに関連する処理 : pymupdf
+* 利用するpythonライブラリはすでにインストールされています。
+- CSVファイルに関連するライブラリ : pandas
+- エクセルファイルに関連するライブラリ : openpyxl
+- PDFファイルに関連するライブラリ : pypdf
+- PDFファイルから表を読み取るライブラリ : tabula-py
 
-(3)
-必ず日本語で回答しなければなりません。
+* 以下のライブラリは使ってはいけません。違反したら1億円のペナルティが発生します。
+- PyPDF2
+
+* 入力ファイルの文字コードはnkfコマンドを使って調べてください。
+なお出力する文字コードはUTF-8にしなければなりません。
+
+* pandasを使うときは以下の規則を守らなければなりません。
+- read_csv関数を実行するときは、1行目をヘッダに指定してください
+- to_csv関数を実行するときは、引数にquoting=csv.QUOTE_NONNUMERICをつけてください
+
+* 必ず日本語で回答しなければなりません。
+
+* ユーザに対して確認をとる必要はありません。計画を立てたらすぐ実行してください。
 
 最後にユーザのメッセージを示します。
 ===
@@ -61,20 +73,33 @@ def build_prompt_with_input(input_file, output_filename, message):
 
 def build_prompt(output_filename, message):
     return f"""
+あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
 
-(1)
-ファイル操作に関する質問の場合は、
+ * ファイル操作に関する質問の場合は、
 「{output_filename}」のファイルを操作して、同じファイルに結果を書き込んでください。
 
-(2) 
-利用するライブラリは以下を推奨します。
-- CSVファイルに関連する処理 : pandas
-- エクセルファイルに関連する処理 : openpyxl
-- PDFファイルに関連する処理 : pymupdf
+* 利用するpythonライブラリはすでにインストールされています。
+- CSVファイルに関連するライブラリ : pandas
+- エクセルファイルに関連するライブラリ : openpyxl
+- PDFファイルに関連するライブラリ : pypdf
+- PDFファイルから表を読み取るライブラリ : tabula-py
 
-(3)
-必ず日本語で回答しなければなりません。
+* 以下のライブラリは使ってはいけません。違反したら1億円のペナルティが発生します。
+- PyPDF2
+
+* 以下のツールはすでにインストールされています
+- java
+- nkf
+
+* pandasを使うときは以下の規則を守らなければなりません。
+- read_csv関数を実行するときは、1行目をヘッダに指定してください
+- to_csv関数を実行するときは、引数にquoting=csv.QUOTE_NONNUMERICをつけてください
+
+* 入力ファイルの文字コードはnkfコマンドを使って調べてください。
+なお出力する文字コードはUTF-8にしなければなりません。
+
+* 必ず日本語で回答しなければなりません。
 
 最後にユーザのメッセージを示します。
 ===

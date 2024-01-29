@@ -536,6 +536,17 @@ files = [
 ]
 
 [[package]]
+name = "distro"
+version = "1.9.0"
+description = "Distro - an OS platform information API"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "distro-1.9.0-py3-none-any.whl", hash = "sha256:7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2"},
+    {file = "distro-1.9.0.tar.gz", hash = "sha256:2fa77c6fd8940f116ee1d6b94a2f90b13b5ea8d019b98bc8bafdcabcdd9bdbed"},
+]
+
+[[package]]
 name = "editor"
 version = "1.6.5"
 description = "🖋 Open the default text editor 🖋"
@@ -1900,62 +1911,22 @@ plugins = ["importlib-metadata"]
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
-name = "pymupdf"
-version = "1.23.19"
-description = "A high performance Python library for data extraction, analysis, conversion & manipulation of PDF (and other) documents."
+name = "pypdf"
+version = "4.0.0"
+description = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.6"
 files = [
-    {file = "PyMuPDF-1.23.19-cp310-none-macosx_10_9_x86_64.whl", hash = "sha256:28634fb89ab2cfb4cd3d4d63856a088a41be77a94421e8c889d6dd2fd3762673"},
-    {file = "PyMuPDF-1.23.19-cp310-none-macosx_11_0_arm64.whl", hash = "sha256:811019c3b0caa106bf35abb299ed3bd7d021357ea57b9dd4df5964906789577a"},
-    {file = "PyMuPDF-1.23.19-cp310-none-manylinux2014_aarch64.whl", hash = "sha256:2e3d834feea5088af45aa0537f794f33ca54a21ee916dc8f97e997cb0ff6e0f3"},
-    {file = "PyMuPDF-1.23.19-cp310-none-manylinux2014_x86_64.whl", hash = "sha256:2f8d4529c5751956d5cc76bcab664fb9450ad8315860f1e47dc06e3f9ed150e5"},
-    {file = "PyMuPDF-1.23.19-cp310-none-win32.whl", hash = "sha256:241087bb0c537bf0adeadae5e328fcef38f5e259b52c8a91615b1ea225464e19"},
-    {file = "PyMuPDF-1.23.19-cp310-none-win_amd64.whl", hash = "sha256:432042f2c25dc5e02a4ae328fe169ee21e83adf68eb52e668096ba02b683fd20"},
-    {file = "PyMuPDF-1.23.19-cp311-none-macosx_10_9_x86_64.whl", hash = "sha256:c1258dff9ba7e8e2428f2928181b5cc07a3a32029c10518fa02cd9859ba096b5"},
-    {file = "PyMuPDF-1.23.19-cp311-none-macosx_11_0_arm64.whl", hash = "sha256:0cb8dd8a23a28f4b2b3f8216a39cc24c69eb7a34cc2ea5d33c53407f6467f103"},
-    {file = "PyMuPDF-1.23.19-cp311-none-manylinux2014_aarch64.whl", hash = "sha256:4d9931fd439133b50fa9637bc1055660d9874299df3033133ddf645caebb7d29"},
-    {file = "PyMuPDF-1.23.19-cp311-none-manylinux2014_x86_64.whl", hash = "sha256:78aeeb1ccf39a2d83c8c263a8613a131d04d2edf6b06607c3f5e1c17f713216e"},
-    {file = "PyMuPDF-1.23.19-cp311-none-win32.whl", hash = "sha256:994c2b501e9789d8b17ecd390157b44eb3335d4d72a829a2c9882341c7498209"},
-    {file = "PyMuPDF-1.23.19-cp311-none-win_amd64.whl", hash = "sha256:ffaec2627d46f2fbbf1a6abd18e2fe29cfb1a9bd1ca7c5fcc319da2f600b4e07"},
-    {file = "PyMuPDF-1.23.19-cp312-none-macosx_10_9_x86_64.whl", hash = "sha256:7e143222d4a557f13a8d9761c552aebbc666e05a2b1e49b2578039b1a1818198"},
-    {file = "PyMuPDF-1.23.19-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:3322385f85e8840fc67cacf8fde2df886e04127fb288c1d59c7281f061eded46"},
-    {file = "PyMuPDF-1.23.19-cp312-none-manylinux2014_aarch64.whl", hash = "sha256:db83aefc7a61ef324f7354c41dcba016fa4feb5caaed0420555dc54833e3259d"},
-    {file = "PyMuPDF-1.23.19-cp312-none-manylinux2014_x86_64.whl", hash = "sha256:4fefb1c38a53976dbb6dd9566845668f23932f567ddffd1855487c67bc5123df"},
-    {file = "PyMuPDF-1.23.19-cp312-none-win32.whl", hash = "sha256:0b1218f652ba7949f4db37222352546b40c7bf2ec4b2152fdcedd50f31a49922"},
-    {file = "PyMuPDF-1.23.19-cp312-none-win_amd64.whl", hash = "sha256:51e7781104854d6b1eadecef28282f80457296e8d86c07f94d09e1a1de870d6d"},
-    {file = "PyMuPDF-1.23.19-cp38-none-macosx_10_9_x86_64.whl", hash = "sha256:4ea20fecbc3e32ea60138bf846a859acb1db3e53883197bdb7d9115bbca37581"},
-    {file = "PyMuPDF-1.23.19-cp38-none-macosx_11_0_arm64.whl", hash = "sha256:683f9d829922433f7249f2feffb350ac5d4971dd8d685dd941042ad1308feec2"},
-    {file = "PyMuPDF-1.23.19-cp38-none-manylinux2014_aarch64.whl", hash = "sha256:6ff1ac703db64f890796e6f06536206f613704aba6e4fcec764ae63f6d67c5ff"},
-    {file = "PyMuPDF-1.23.19-cp38-none-manylinux2014_x86_64.whl", hash = "sha256:d1a33697c832aefc1d8697d739f5ca09964459c68a75ca59e42592bc6c721a1d"},
-    {file = "PyMuPDF-1.23.19-cp38-none-win32.whl", hash = "sha256:d4fbb8fa647d741583abde7ddfc543859ad97eb237f4afa7f451239044f2df2b"},
-    {file = "PyMuPDF-1.23.19-cp38-none-win_amd64.whl", hash = "sha256:c269d89843baa4c7f49bb85a1b8d78079a7858e7181545eaccacd88a01cb9869"},
-    {file = "PyMuPDF-1.23.19-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:c7fc378a2634ffc4d20344b0ee8a370f250ccfd8a1a4a87cac51e7472ae56ddd"},
-    {file = "PyMuPDF-1.23.19-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:cb16b16db848f0dec59f5fe603fadfcb5c0c4823538590e7c34e0ace1072887c"},
-    {file = "PyMuPDF-1.23.19-cp39-none-manylinux2014_aarch64.whl", hash = "sha256:83253dcafa8179ae505b92fdd04146109ffc3808860984d7830e1ec6bc072144"},
-    {file = "PyMuPDF-1.23.19-cp39-none-manylinux2014_x86_64.whl", hash = "sha256:a5ecb8f96851a610cfd0413e2ed2cdcc13d98b526b4aa84e493eef49399d20be"},
-    {file = "PyMuPDF-1.23.19-cp39-none-win32.whl", hash = "sha256:96d64b10c267e6c90f5e98a75e2cd41fbb3a2d4c09ae0fe75875eee5072cc103"},
-    {file = "PyMuPDF-1.23.19-cp39-none-win_amd64.whl", hash = "sha256:2b415c6909b00e1bdd4ee77b878b2807f04382c68339535c8beb1d05a292c8ec"},
-    {file = "PyMuPDF-1.23.19.tar.gz", hash = "sha256:314b3da25c00a8e9a8db673665b2bf4fe40d02d460449bed7a3b94d5cf2aef92"},
+    {file = "pypdf-4.0.0-py3-none-any.whl", hash = "sha256:071d837f9d109c260cc70b026d3ffad3db6f905131b51f39fe74f2fa435ea003"},
+    {file = "pypdf-4.0.0.tar.gz", hash = "sha256:637de66382238f3537fcf8f27fdb47e2c99dd5aa6de173a28a5b737f9a784973"},
 ]
 
-[package.dependencies]
-PyMuPDFb = "1.23.9"
-
-[[package]]
-name = "pymupdfb"
-version = "1.23.9"
-description = "MuPDF shared libraries for PyMuPDF."
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "PyMuPDFb-1.23.9-py3-none-macosx_10_9_x86_64.whl", hash = "sha256:457cede084f0a6a80a5b3b678b48f72f5f7185f4be93440bd3b062472588cd05"},
-    {file = "PyMuPDFb-1.23.9-py3-none-macosx_11_0_arm64.whl", hash = "sha256:ecf27e040d5faeadb1ade715a4b65cd8a23c6bc40c111df5a685b68ce4d779d2"},
-    {file = "PyMuPDFb-1.23.9-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:29ab88d23eedd1e2f29e21692945dabfcff3d3b1f6bd97ac35d4984e9bd32ed0"},
-    {file = "PyMuPDFb-1.23.9-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:bc7703ce110784d7b7f1fc7a59cb36072a07c6b2d19f5a5bf0a960227a8adb5c"},
-    {file = "PyMuPDFb-1.23.9-py3-none-win32.whl", hash = "sha256:3f549891e558a6fc335eafe23d50bd4fda3c5f2dbfd7e9edf362d21ef5945fe9"},
-    {file = "PyMuPDFb-1.23.9-py3-none-win_amd64.whl", hash = "sha256:6a2a631fbd03330347b1ecf53f5534c4f7375b44e60b5ad8f36c5c96d4e6ec35"},
-]
+[package.extras]
+crypto = ["PyCryptodome", "cryptography"]
+dev = ["black", "flit", "pip-tools", "pre-commit (<2.18.0)", "pytest-cov", "pytest-socket", "pytest-timeout", "pytest-xdist", "wheel"]
+docs = ["myst_parser", "sphinx", "sphinx_rtd_theme"]
+full = ["Pillow (>=8.0.0)", "PyCryptodome", "cryptography"]
+image = ["Pillow (>=8.0.0)"]
 
 [[package]]
 name = "pyreadline3"
@@ -2462,6 +2433,28 @@ anyio = ">=3.4.0,<5"
 
 [package.extras]
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
+
+[[package]]
+name = "tabula-py"
+version = "2.9.0"
+description = "Simple wrapper for tabula-java, read tables from PDF into DataFrame"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "tabula-py-2.9.0.tar.gz", hash = "sha256:a2cc01970e799bf66206d8b30deb22bbc325d6847460c3197d5bc2063cb34713"},
+    {file = "tabula_py-2.9.0-py3-none-any.whl", hash = "sha256:7c29b1331e2ea79a4e3e87861a0c01de6f7c249d841e61074ac67cfd4b37e656"},
+]
+
+[package.dependencies]
+distro = "*"
+numpy = "*"
+pandas = ">=0.25.3"
+
+[package.extras]
+dev = ["Flake8-pyproject", "black", "flake8", "isort", "mypy", "pytest"]
+doc = ["Jinja2 (==3.1.2)", "sphinx (==7.1.2)", "sphinx-rtd-theme (==1.3.0)"]
+jpype = ["jpype1"]
+test = ["pytest"]
 
 [[package]]
 name = "termcolor"
@@ -3019,6 +3012,22 @@ files = [
 ]
 
 [[package]]
+name = "xlrd"
+version = "2.0.1"
+description = "Library for developers to extract data from Microsoft Excel (tm) .xls spreadsheet files"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+files = [
+    {file = "xlrd-2.0.1-py2.py3-none-any.whl", hash = "sha256:6a33ee89877bd9abc1158129f6e94be74e2679636b8a205b43b85206c3f0bbdd"},
+    {file = "xlrd-2.0.1.tar.gz", hash = "sha256:f72f148f54442c6b056bf931dbc34f986fd0c3b0b6b5a58d013c9aef274d0c88"},
+]
+
+[package.extras]
+build = ["twine", "wheel"]
+docs = ["sphinx"]
+test = ["pytest", "pytest-cov"]
+
+[[package]]
 name = "xmod"
 version = "1.8.1"
 description = "🌱 Turn any object into a module 🌱"
@@ -3164,4 +3173,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.3"
-content-hash = "64a009f0cbe4b6ee9105556e85dc6eb8d22c9f6c7605620704bdcd90ae51bfc8"
+content-hash = "ba546f4177178ff18b2355e47483b2457692bdc3699e2757341964ee7a69b07b"

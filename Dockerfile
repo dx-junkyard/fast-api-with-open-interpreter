@@ -10,6 +10,9 @@ COPY ./requirements.txt /code/requirements.txt
 # 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
+# 必要なツールをインストール
+RUN apt-get update && apt-get install -y nkf && apt-get install -y default-jdk
+
 # 
 COPY ./src /code/src
 

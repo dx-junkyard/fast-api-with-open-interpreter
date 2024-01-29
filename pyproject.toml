@@ -14,7 +14,9 @@ open-interpreter = "0.1.17"
 python-multipart = "^0.0.6"
 pandas = "^2.1.4"
 openpyxl = "^3.1.2"
-pymupdf = "^1.23.19"
+pypdf = "^4.0.0"
+tabula-py = "^2.9.0"
+xlrd = "^2.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
