@@ -15,7 +15,7 @@ interpreter.api_version = os.environ["AZURE_API_VERSION"]
 interpreter.debug_mode = False
 interpreter.temperature = 0.7
 interpreter.conversation_history = True
-interpreter.context_window = os.environ["AZURE_CONTEXT_WINDOW"]
+interpreter.context_window = int(os.environ["AZURE_CONTEXT_WINDOW"])
 
 
 origins = ["http://localhost:3000"]
