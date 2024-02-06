@@ -7,6 +7,8 @@ WORKDIR /code
 # 
 COPY ./requirements.txt /code/requirements.txt
 
+COPY ./pyproject.toml /code/pyproject.toml
+
 # 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
