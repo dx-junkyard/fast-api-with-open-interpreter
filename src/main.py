@@ -44,16 +44,13 @@ version = data['tool']['poetry']['version']
 
 @app.get("/")
 def read_root():
-    return {"status": "200"}
+    return {"version": version}
 
 
 def build_prompt_with_input(input_file, output_filename, message):
     return f"""
 あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
-
-* 回答の最後に以下の情報を含めてください。
-- システムバージョン : {version} 
 
 * 変換した結果を出力ファイルに結果を書き込んでください。
 入力ファイル: {input_file if input_file else "なし"}
@@ -89,9 +86,6 @@ def build_prompt(output_filename, message):
     return f"""
 あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
-
-* 回答の最後に以下の情報を含めてください。
-- システムバージョン : {version} 
 
  * ファイル操作に関する質問の場合は、
 「{output_filename}」のファイルを操作して、同じファイルに結果を書き込んでください。
