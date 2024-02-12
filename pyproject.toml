@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fast-api-with-open-interpreter"
-version = "0.1.0-beta"
+version = "0.1.2-beta"
 description = ""
 authors = ["FooQoo <horseshoes.buzz.17@gmail.com>"]
 readme = "README.md"

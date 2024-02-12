@@ -41,23 +41,15 @@ with open(file_path, 'rb') as toml_file:
 # バージョン情報を取得
 version = data['tool']['poetry']['version']
 
-
-@app.get("/")
-def read_root():
-    return {"version": version}
-
-
-def build_prompt_with_input(input_file, output_filename, message):
-    return f"""
+interpreter.custom_instructions = f"""
 あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
+計画してもらった内容はすぐに実行しなければなりません。ユーザの回答を待ってはいけません。
 
 * 回答の最初は以下のように答えてください。
 - Ver.{version}のAIが質問を承りました。
 
-* 変換した結果を出力ファイルに結果を書き込んでください。
-入力ファイル: {input_file if input_file else "なし"}
-出力ファイル: {output_filename if output_filename else "なし"}
+* 質問ごとに入出力のファイルについて、指示があるのでそれを遵守してください。
 
 * 利用するpythonライブラリはすでにインストールされています。
 - CSVファイルに関連するライブラリ : pandas
@@ -65,8 +57,9 @@ def build_prompt_with_input(input_file, output_filename, message):
 - PDFファイルに関連するライブラリ : pypdf
 - PDFファイルから表を読み取るライブラリ : tabula-py
 
-* 以下のライブラリは使ってはいけません。違反したら1億円のペナルティが発生します。
-- PyPDF2
+* PDFファイルから表を読み取るライブラリの優先度は以下です。上から順番に試してください。
+1. tabula-py
+2. pypdf
 
 * 入力ファイルがテキストファイルの場合はnkfコマンドを使って文字コードを調べてください。
 なお出力する文字コードはUTF-8にしなければなりません。
@@ -74,51 +67,24 @@ def build_prompt_with_input(input_file, output_filename, message):
 * pandasを使うときは以下の規則を守らなければなりません。
 - read_csv関数を実行するときは、1行目をヘッダに指定してください
 - to_csv関数を実行するときは、引数にquoting=csv.QUOTE_NONNUMERICをつけてください
+- csvモジュールをimportしてください。
 
 * 必ず日本語で回答しなければなりません。
 
 * ユーザに対して確認をとる必要はありません。計画を立てたらすぐ実行してください。
-
-最後にユーザのメッセージを示します。
-===
-{message}
 """
 
 
-def build_prompt(output_filename, message):
+@app.get("/")
+def read_root():
+    return {"version": version}
+
+
+def build_prompt(input_file, output_filename, message):
     return f"""
-あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
-以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
-
-* 回答の最初は以下のように答えてください。
-- Ver.{version}のAIが質問を承りました。
-
- * ファイル操作に関する質問の場合は、
-「{output_filename}」のファイルを操作して、同じファイルに結果を書き込んでください。
-
-* 利用するpythonライブラリはすでにインストールされています。
-- CSVファイルに関連するライブラリ : pandas
-- エクセルファイルに関連するライブラリ : openpyxl
-- PDFファイルに関連するライブラリ : pypdf
-- PDFファイルから表を読み取るライブラリ : tabula-py
-
-* 以下のライブラリは使ってはいけません。違反したら1億円のペナルティが発生します。
-- PyPDF2
-
-* 以下のツールはすでにインストールされています
-- java
-- nkf
-
-* pandasを使うときは以下の規則を守らなければなりません。
-- read_csv関数を実行するときは、1行目をヘッダに指定してください
-- to_csv関数を実行するときは、引数にquoting=csv.QUOTE_NONNUMERICをつけてください
-
-* 入力ファイルがテキストファイルの場合は文字コードは文字コードをnkfコマンドを使って調べてください。
-なお出力する文字コードはUTF-8にしなければなりません。
-
-* 必ず日本語で回答しなければなりません。
-
-最後にユーザのメッセージを示します。
+ユーザの質問に回答してください。
+{"入力ファイル: " + input_file if input_file else ""}
+{"出力ファイル: " + output_filename if output_filename else ""}
 ===
 {message}
 """
@@ -132,7 +98,7 @@ def chat_endpoint(
 ):
     output_filename = f"{uuid}_output.csv"
 
-    message = build_prompt(output_filename, message)
+    message = build_prompt(None, output_filename, message)
 
     def event_stream():
         for result in interpreter.chat(message, stream=True):
@@ -159,7 +125,7 @@ def chat_endpoint_with_file(
     input_filename = f"{uuid}_input.{extension}"
     output_filename = f"{uuid}_output.csv"
 
-    message = build_prompt_with_input(input_filename, output_filename, message)
+    message = build_prompt(input_filename, output_filename, message)
 
     # fileを一時的に保存する
     with open(input_filename, "wb") as f:
