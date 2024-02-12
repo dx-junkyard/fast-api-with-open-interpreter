@@ -41,7 +41,7 @@ with open(file_path, 'rb') as toml_file:
 # バージョン情報を取得
 version = data['tool']['poetry']['version']
 
-interpreter.custom_instructions = f"""
+interpreter.instruction = f"""
 あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
 計画してもらった内容はすぐに実行しなければなりません。ユーザの回答を待ってはいけません。
