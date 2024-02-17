@@ -17,7 +17,8 @@ def create_interpreter():
     interpreter_client.conversation_history = True
     interpreter_client.context_window = int(os.environ["AZURE_CONTEXT_WINDOW"])
 
-    interpreter_client.system_message = interpreter_client.system_message + custom_instruction
+    interpreter_client.system_message = (interpreter_client.system_message
+                                         .replace("First, write a plan.", "") + custom_instruction)
 
     return interpreter_client
 
@@ -26,6 +27,7 @@ custom_instruction = f"""
 あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
 計画してもらった内容はすぐに実行しなければなりません。ユーザの回答を待ってはいけません。
+あなたには全てのPythonコードの実行権限を与えてます。計画はユーザの回答を待たずに実行してください。
 それではユーザの質問を待ちましょう。
 
 * 回答の最初は以下のように答えてください。
