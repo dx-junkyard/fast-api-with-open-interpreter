@@ -1,5 +1,6 @@
 import json
 import os
+import tomllib
 from typing import Annotated
 
 import interpreter
@@ -18,6 +19,50 @@ interpreter.temperature = 0.7
 interpreter.conversation_history = True
 interpreter.context_window = int(os.environ["AZURE_CONTEXT_WINDOW"])
 
+# pyproject.tomlファイルのパス
+file_path = 'pyproject.toml'
+
+# tomlファイルを読み込む
+with open(file_path, 'rb') as toml_file:
+    data = tomllib.load(toml_file)
+
+# バージョン情報を取得
+version = data['tool']['poetry']['version']
+
+interpreter.system_message = interpreter.system_message + f"""
+あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
+以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
+計画してもらった内容はすぐに実行しなければなりません。ユーザの回答を待ってはいけません。
+それではユーザの質問を待ちましょう。
+
+* 回答の最初は以下のように答えてください。
+- Ver.{version}のAIが質問を承りました。
+
+* 質問ごとに入出力のファイルについて、指示があるのでそれを遵守してください。
+
+* 利用するpythonライブラリはすでにインストールされています。
+- CSVファイルに関連するライブラリ : pandas
+- エクセルファイルに関連するライブラリ : openpyxl
+- PDFファイルに関連するライブラリ : pypdf
+- PDFファイルから表を読み取るライブラリ : tabula-py 
+  - multiple_tablesは指定しないのがベストです。
+
+* PDFファイルから表を読み取るライブラリの優先度は以下です。上から順番に試してください。
+1. tabula-py
+2. pypdf
+
+* 入力ファイルがテキストファイルの場合はnkfコマンドを使って文字コードを調べてください。
+なお出力する文字コードはUTF-8にしなければなりません。
+
+* pandasを使うときは以下の規則を守らなければなりません。
+- read_csv関数を実行するときは、1行目をヘッダに指定してください
+- to_csv関数を実行するときは、引数にquoting=csv.QUOTE_NONNUMERICをつけてください
+- csvモジュールをimportしてください。
+
+* 必ず日本語で回答しなければなりません。
+
+* ユーザに対して確認をとる必要はありません。計画を立てたらすぐ実行してください。
+"""
 
 def build_prompt(input_file, output_filename, message):
     return f"""
@@ -98,6 +143,7 @@ headers = {
 
 
 def after_task(output_filename):
-    files = {"files": open(output_filename, "rb")}
-    res = requests.post(post_url, files=files, headers=headers)
-    print(res.text)
+    if os.path.exists(output_filename):
+        files = {"files": open(output_filename, "rb")}
+        res = requests.post(post_url, files=files, headers=headers)
+        print(res.text)
