@@ -42,13 +42,10 @@ fast-api-with-open-interpreter の開発に興味を持っていただき、あ�
 
 ### 事前知識
 
-本プロジェクトは、git-flow に基づいて開発を行います。
-[A successful Git branching model » nvie.com](https://nvie.com/posts/a-successful-git-branching-model/)
+本プロジェクトは、GitHub flow に基づいて開発を行います。
+[GitHub flow - GitHub Docs](https://docs.github.com/en/get-started/using-github/github-flow)
 
-原則、develop ブランチに向けて Pull Request を作成してください。
-develop ブランチにマージされたコードは、リリースのタイミングで main ブランチにマージされます。
-
-main ブランチにマージされたコードは、CODEOWNERS によってリリースパッケージが作成された後に、本番環境にデプロイされます。
+原則、main ブランチに向けて Pull Request を作成してください。
 
 ### 開発の流れ
 
@@ -71,7 +68,7 @@ GitHub のリポジトリページで本プロジェクトをフォークして�
 
 #### 5. PR の作成
 
-develop ブランチに向けて PR を作成しましょう。CODEOWNERS のメンバーがレビューします。
+main ブランチに向けて PR を作成しましょう。CODEOWNERS のメンバーがレビューします。
 
 #### 6. プルリクエストのレビュー
 
