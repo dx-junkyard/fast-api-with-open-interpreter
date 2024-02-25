@@ -100,7 +100,7 @@ def event_stream(message: str,
         logger.info("thread exists")
         session.messages = get_user(user_id).messages
 
-    for result in session.chat(message, stream=True, display=True):
+    for result in session.chat(message, stream=True, display=False):
         result_json = json.dumps(result, ensure_ascii=False)
         yield f"data: {result_json}\n\n"
 
