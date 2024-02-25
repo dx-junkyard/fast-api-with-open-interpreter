@@ -1,12 +1,14 @@
-from interpreter import Interpreter
+from typing import List, Any
 
 
 class User:
     name: str
-    thread: Interpreter
+    messages: List[Any]
     file: bytes | None
 
-    def __init__(self, name: str, thread: Interpreter = None, file: bytes = None):
+    def __init__(self, name: str, messages=None, file: bytes = None):
+        if messages is None:
+            messages = []
         self.name = name
-        self.thread = thread
+        self.messages = messages
         self.file = file

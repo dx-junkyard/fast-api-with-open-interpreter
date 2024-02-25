@@ -12,9 +12,9 @@ def create_interpreter():
     interpreter_client.api_base = os.environ["AZURE_API_BASE"]
     interpreter_client.api_key = os.environ["AZURE_API_KEY"]
     interpreter_client.api_version = os.environ["AZURE_API_VERSION"]
-    interpreter_client.debug_mode = False
-    interpreter_client.temperature = 0.7
-    interpreter_client.conversation_history = True
+    interpreter_client.debug_mode = True
+    interpreter_client.temperature = 1.0
+    interpreter_client.conversation_history = False
     interpreter_client.context_window = int(os.environ["AZURE_CONTEXT_WINDOW"])
 
     interpreter_client.system_message = (interpreter_client.system_message

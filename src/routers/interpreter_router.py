@@ -2,13 +2,13 @@ import json
 import os
 from typing import Annotated
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, File, Form
+from fastapi import APIRouter, HTTPException, File, Form
 from fastapi.responses import StreamingResponse
 
 from src.config.logger import logger
 from src.domain.model.filename import FileName
 from src.repository.interpreter_client import create_interpreter
-from src.repository.user_repository import get_user, upsert_thread, upsert_file, exist_thread
+from src.repository.user_repository import get_user, upsert_user, exist_history
 
 router = APIRouter(prefix="/api")
 
@@ -35,11 +35,10 @@ def chat_endpoint(
         user_id: Annotated[str, Form()],
         message: Annotated[str, Form()],
         is_first: Annotated[bool, Form()],
-        background_tasks: BackgroundTasks,
 ):
     filename = None
 
-    if exist_thread(user_id) and get_user(user_id).file is not None:
+    if exist_history(user_id) and get_user(user_id).file is not None:
         logger.info("file exists")
         filename = FileName()
 
@@ -69,7 +68,6 @@ def chat_endpoint_with_file(
         user_id: Annotated[str, Form()],
         message: Annotated[str, Form()],
         is_first: Annotated[bool, Form()],
-        background_tasks: BackgroundTasks,
 ):
     filename = FileName()
 
@@ -96,15 +94,13 @@ def event_stream(message: str,
                  filename: FileName | None,
                  user_id: str,
                  is_first: bool = False):
+    session = create_interpreter()
 
-    if exist_thread(user_id) and not is_first:
+    if exist_history(user_id) and not is_first:
         logger.info("thread exists")
-        session = get_user(user_id).thread
-    else:
-        session = create_interpreter()
-        upsert_thread(user_id, session)
+        session.messages = get_user(user_id).messages
 
-    for result in session.chat(message, stream=True, display=False):
+    for result in session.chat(message, stream=True, display=True):
         result_json = json.dumps(result, ensure_ascii=False)
         yield f"data: {result_json}\n\n"
 
@@ -120,12 +116,10 @@ def event_stream(message: str,
             result_json = json.dumps({'file_id': filename.base}, ensure_ascii=False)
             yield f"data: {result_json}\n\n"
 
-        upsert_file(user_id, content)
+        upsert_user(user_id, session.messages, content)
 
         if os.path.exists(filename.input):
             os.remove(filename.input)
 
         if os.path.exists(filename.output):
             os.remove(filename.output)
-
-
