@@ -94,13 +94,13 @@ def event_stream(message: str,
                  filename: FileName | None,
                  user_id: str,
                  is_first: bool = False):
-    session = create_interpreter()
+    ai = create_interpreter()
 
     if exist_history(user_id) and not is_first:
         logger.info("thread exists")
-        session.messages = get_user(user_id).messages
+        ai.messages = get_user(user_id).messages
 
-    for result in session.chat(message, stream=True, display=False):
+    for result in ai.chat(message, stream=True, display=False):
         result_json = json.dumps(result, ensure_ascii=False)
         yield f"data: {result_json}\n\n"
 
@@ -116,7 +116,7 @@ def event_stream(message: str,
             result_json = json.dumps({'file_id': filename.base}, ensure_ascii=False)
             yield f"data: {result_json}\n\n"
 
-        upsert_user(user_id, session.messages, content)
+        upsert_user(user_id, ai.messages, content)
 
         if os.path.exists(filename.input):
             os.remove(filename.input)
