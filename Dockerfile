@@ -18,5 +18,7 @@ RUN apt-get update && apt-get install -y nkf && apt-get install -y default-jdk
 # 
 COPY ./src /code/src
 
+COPY ./history /code/history
+
 # 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80"]

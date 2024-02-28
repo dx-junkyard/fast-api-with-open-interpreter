@@ -1,8 +1,12 @@
+import json
 import os
 
 import interpreter
 
 from src.config.tool_version_config import tool_version
+
+# jsonファイルのメッセージを読み取る
+instruction_messages = json.load(open("./history/conversations/instruction_conversation.json", "r"))
 
 
 def create_interpreter():
@@ -12,9 +16,10 @@ def create_interpreter():
     interpreter_client.api_base = os.environ["AZURE_API_BASE"]
     interpreter_client.api_key = os.environ["AZURE_API_KEY"]
     interpreter_client.api_version = os.environ["AZURE_API_VERSION"]
+    interpreter_client.messages = instruction_messages
     interpreter_client.debug_mode = False
     interpreter_client.temperature = 0.7
-    interpreter_client.conversation_history = False
+    interpreter_client.conversation_history = True
     interpreter_client.context_window = int(os.environ["AZURE_CONTEXT_WINDOW"])
 
     interpreter_client.system_message = (interpreter_client.system_message
@@ -27,7 +32,6 @@ custom_instruction = f"""
 あなたは、pdf/エクセル/csvといった様々なファイルから表を抽出し、csvファイルに変換するスペシャリストです。
 以下の規則に従い、ユーザの質問に回答してください。従わない場合はペナルティが発生します。
 計画してもらった内容はすぐに実行しなければなりません。ユーザの回答を待ってはいけません。
-あなたには全てのPythonコードの実行権限を与えてます。計画はユーザの回答を待たずに実行してください。
 それではユーザの質問を待ちましょう。
 
 * 回答の最初は以下のように答えてください。
@@ -41,7 +45,6 @@ custom_instruction = f"""
 - PDFファイルに関連するライブラリ : pypdf
 - PDFファイルから表を読み取るライブラリ : tabula-py 
   - multiple_tablesは指定しないのがベストです。
-  - jpypeはインストールされてなくても実行できます
 
 * PDFファイルから表を読み取るライブラリの優先度は以下です。上から順番に試してください。
 1. tabula-py
@@ -58,6 +61,4 @@ custom_instruction = f"""
 * 必ず日本語で回答しなければなりません。
 
 * ユーザに対して確認をとる必要はありません。計画を立てたらすぐ実行してください。
-
-* ユーザが「どうぞ」や「進めてください」などいった指示を出した場合は、一つ前の質問に対する回答に含まれる計画を実行してください
 """
