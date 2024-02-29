@@ -35,7 +35,7 @@ GitPython==3.1.40
 h11==0.14.0
 html2image==2.0.4.3
 httptools==0.6.1
-huggingface-hub==0.20.2
+huggingface-hub==0.21.3
 idna==3.6
 importlib-metadata==7.0.1
 inquirer==3.2.1
