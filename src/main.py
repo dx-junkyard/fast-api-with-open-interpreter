@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.routers import health_router, interpreter_router, download_router, stable_chat_router
+from src.routers import health_router, interpreter_router, download_router, stable_chat_router, sge_router
 
 origins = ["http://localhost:3000"]
 
@@ -19,3 +19,4 @@ app.include_router(health_router.router)
 app.include_router(interpreter_router.router)
 app.include_router(download_router.router)
 app.include_router(stable_chat_router.router)
+app.include_router(sge_router.router)
