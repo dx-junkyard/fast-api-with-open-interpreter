@@ -2,7 +2,7 @@ import json
 import os
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, File, Form
+from fastapi import APIRouter, HTTPException, File, Form, UploadFile
 from fastapi.responses import StreamingResponse
 
 from src.config.logger import logger
@@ -64,7 +64,7 @@ def chat_endpoint(
 
 @router.post("/chat/file")
 def chat_endpoint_with_file(
-        file: Annotated[bytes, File()],
+        file: Annotated[UploadFile, File()],
         user_id: Annotated[str, Form()],
         message: Annotated[str, Form()],
         is_first: Annotated[bool, Form()],
@@ -75,7 +75,7 @@ def chat_endpoint_with_file(
 
     # fileを一時的に保存する
     with open(filename.input, "wb") as f:
-        f.write(file)
+        f.write(file.file.read())
 
     # outputファイルを一時的に作成する
     with open(filename.output, "w") as f:

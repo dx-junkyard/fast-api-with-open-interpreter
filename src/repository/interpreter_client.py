@@ -17,8 +17,8 @@ def create_interpreter():
     interpreter_client.api_key = os.environ["AZURE_API_KEY"]
     interpreter_client.api_version = os.environ["AZURE_API_VERSION"]
     interpreter_client.messages = instruction_messages
-    interpreter_client.conversation_filename = "instruction_conversation.json"
-    interpreter_client.conversation_history_path = os.path.join("history", "conversations")
+    # interpreter_client.conversation_filename = "instruction_conversation.json"
+    # interpreter_client.conversation_history_path = os.path.join("history", "conversations")
     interpreter_client.debug_mode = False
     interpreter_client.temperature = 0.7
     interpreter_client.conversation_history = True
