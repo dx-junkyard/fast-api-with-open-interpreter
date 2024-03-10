@@ -47,9 +47,9 @@ def chat_reset_endpoint(
     return {"message": "success"}
 
 
-@router.get("/chat/history/")
+@router.post("/chat/history/")
 def history_endpoint(
-        user_id: str
+        user_id: Annotated[str, Form()]
 ):
     if exist_history(user_id):
         return get_user(user_id).messages
