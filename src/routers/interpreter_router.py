@@ -30,11 +30,37 @@ def build_prompt(filename: FileName | None, message: str, user_id) -> str:
 """
 
 
-@router.post("/chat")
+@router.post("/chat/reset")
+def chat_reset_endpoint(
+        history: Annotated[UploadFile, Form()],
+        user_id: Annotated[str, Form()]
+):
+    # historyがJSON形式であることを確認する
+    try:
+        history_json = json.load(history.file)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=400)
+
+    upsert_user(user_id, history_json, None)
+
+    return {"message": "success"}
+
+
+@router.get("/chat/history/")
+def history_endpoint(
+        user_id: str
+):
+    if exist_history(user_id):
+        return get_user(user_id).messages
+    else:
+        raise HTTPException(status_code=404)
+
+
+@router.post("/chat/")
 def chat_endpoint(
         user_id: Annotated[str, Form()],
         message: Annotated[str, Form()],
-        is_first: Annotated[bool, Form()],
 ):
     filename = None
 
@@ -55,7 +81,7 @@ def chat_endpoint(
 
     try:
         return StreamingResponse(
-            event_stream(message, filename, user_id, is_first),
+            event_stream(message, filename, user_id),
             media_type="text/event-stream")
     except Exception as e:
         print(e)
@@ -67,7 +93,6 @@ def chat_endpoint_with_file(
         file: Annotated[UploadFile, File()],
         user_id: Annotated[str, Form()],
         message: Annotated[str, Form()],
-        is_first: Annotated[bool, Form()],
 ):
     filename = FileName()
 
@@ -83,7 +108,7 @@ def chat_endpoint_with_file(
 
     try:
         return StreamingResponse(
-            event_stream(message, filename, user_id, is_first),
+            event_stream(message, filename, user_id),
             media_type="text/event-stream")
     except Exception as e:
         print(e)
@@ -92,11 +117,10 @@ def chat_endpoint_with_file(
 
 def event_stream(message: str,
                  filename: FileName | None,
-                 user_id: str,
-                 is_first: bool = False):
+                 user_id: str):
     ai = create_interpreter()
 
-    if exist_history(user_id) and not is_first:
+    if exist_history(user_id):
         logger.info("thread exists")
         ai.messages = get_user(user_id).messages
 

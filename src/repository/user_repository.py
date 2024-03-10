@@ -5,7 +5,7 @@ from src.domain.model.user import User
 user_database: Dict[str, User] = {}
 
 
-def upsert_user(user_id: str, messages: List[Any], content: bytes) -> None:
+def upsert_user(user_id: str, messages: List[Any], content: bytes | None) -> None:
     if user_id in user_database:
         user_database[user_id].messages = messages
         user_database[user_id].file = content
