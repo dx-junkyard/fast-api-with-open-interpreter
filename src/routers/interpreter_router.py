@@ -32,7 +32,7 @@ def build_prompt(filename: FileName | None, message: str, user_id) -> str:
 
 @router.post("/chat/reset")
 def chat_reset_endpoint(
-        history: Annotated[UploadFile, Form()],
+        history: Annotated[UploadFile, File()],
         user_id: Annotated[str, Form()]
 ):
     # historyがJSON形式であることを確認する
@@ -47,7 +47,7 @@ def chat_reset_endpoint(
     return {"message": "success"}
 
 
-@router.post("/chat/history/")
+@router.post("/chat/history")
 def history_endpoint(
         user_id: Annotated[str, Form()]
 ):
@@ -57,7 +57,7 @@ def history_endpoint(
         raise HTTPException(status_code=404)
 
 
-@router.post("/chat/")
+@router.post("/chat")
 def chat_endpoint(
         user_id: Annotated[str, Form()],
         message: Annotated[str, Form()],
@@ -120,7 +120,7 @@ def event_stream(message: str,
                  user_id: str):
     ai = create_interpreter()
 
-    if exist_history(user_id):
+    if exist_history(user_id) and get_user(user_id).messages:
         logger.info("thread exists")
         ai.messages = get_user(user_id).messages
 

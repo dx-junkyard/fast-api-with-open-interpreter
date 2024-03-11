@@ -18,4 +18,6 @@ def get_user(user_id: str) -> User:
 
 
 def exist_history(user_id: str) -> bool:
-    return user_id in user_database and user_database[user_id].messages is not None
+    return user_id in user_database \
+        and user_database[user_id].messages is not None \
+        and len(user_database[user_id].messages) > 0
