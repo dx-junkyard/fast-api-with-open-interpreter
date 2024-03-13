@@ -5,7 +5,7 @@ from src.domain.model.user import User
 user_database: Dict[str, User] = {}
 
 
-def upsert_user(user_id: str, messages: List[Any], content: bytes) -> None:
+def upsert_user(user_id: str, messages: List[Any], content: bytes | None) -> None:
     if user_id in user_database:
         user_database[user_id].messages = messages
         user_database[user_id].file = content
@@ -18,4 +18,6 @@ def get_user(user_id: str) -> User:
 
 
 def exist_history(user_id: str) -> bool:
-    return user_id in user_database and user_database[user_id].messages is not None
+    return user_id in user_database \
+        and user_database[user_id].messages is not None \
+        and len(user_database[user_id].messages) > 0

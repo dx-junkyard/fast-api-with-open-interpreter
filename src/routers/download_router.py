@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import StreamingResponse, Response
+from fastapi.responses import Response
 
 from src.config.logger import logger
 from src.repository.user_repository import get_user
