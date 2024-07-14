@@ -1711,20 +1711,21 @@ ptyprocess = ">=0.5"
 
 [[package]]
 name = "pip-licenses"
-version = "4.3.4"
+version = "4.5.1"
 description = "Dump the software license list of Python packages installed with pip."
 optional = false
 python-versions = "~=3.8"
 files = [
-    {file = "pip-licenses-4.3.4.tar.gz", hash = "sha256:9c6c9c3252b976d08735bdffb0eb4c5eaa50dfd46f5e075532c0248ffe94fed1"},
-    {file = "pip_licenses-4.3.4-py3-none-any.whl", hash = "sha256:85706ec30781076eb611fed3934f27a1f18437d3211f747567cd3c4e943fce1b"},
+    {file = "pip-licenses-4.5.1.tar.gz", hash = "sha256:fad5f56fbaa56b8e414434e36c32394a9412ff10ddf2cef92b51951bdf193869"},
+    {file = "pip_licenses-4.5.1-py3-none-any.whl", hash = "sha256:7c982bc6837f47d32d4016b43d9174c0ce723b450710a2111a3ebbb910f152b7"},
 ]
 
 [package.dependencies]
 prettytable = ">=2.3.0"
+tomli = ">=2"
 
 [package.extras]
-test = ["docutils", "mypy", "pytest-cov", "pytest-pycodestyle", "pytest-runner"]
+test = ["docutils", "mypy", "pytest-cov", "pytest-pycodestyle", "pytest-runner", "tomli-w"]
 
 [[package]]
 name = "platformdirs"
@@ -2728,6 +2729,17 @@ files = [
 
 [package.dependencies]
 tiktoken = ">=0.4.0"
+
+[[package]]
+name = "tomli"
+version = "2.0.1"
+description = "A lil' TOML parser"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
+    {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
 
 [[package]]
 name = "tornado"
