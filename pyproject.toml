@@ -8,7 +8,7 @@ packages = [{include = "fast_api_with_open_interpreter", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "3.11.3"
-fastapi = "^0.108.0"
+fastapi = "^0.115.0"
 uvicorn = {extras = ["standard"], version = "^0.25.0"}
 open-interpreter = "0.1.17"
 python-multipart = "^0.0.6"
