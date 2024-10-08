@@ -1,4 +1,4 @@
-FROM --platform=linux/x86_64 python:3.11.3
+FROM --platform=linux/x86_64 python:3.13.0
 
 # 必要なツールをインストール
 RUN apt-get update &&  \
