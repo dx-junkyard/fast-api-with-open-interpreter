@@ -1,6 +1,24 @@
 # fast-api-with-open-interpreter
 OpenInterpreterの機能をFastAPIで提供するためのプロジェクトです。
 
+# How to use
+```bash
+# 1. Clone this repository
+git clone git@github.com:dx-junkyard/fast-api-with-open-interpreter.git
+
+# 2. Change directory
+cd fast-api-with-open-interpreter
+
+# 3. Install dependencies
+poetry install
+
+# 4. Create .env file
+touch .env
+
+# 5. Run server
+make dev
+```
+
 ## How to build and run
 
 1. Build image
